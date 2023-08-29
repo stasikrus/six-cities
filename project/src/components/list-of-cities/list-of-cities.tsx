@@ -2,12 +2,13 @@ import { CITY } from '../../mocks/cities';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getSelectedCity } from '../../store/selectors';
 import { changeCity } from '../../store/action';
+import { OffersDataCityName } from '../../types/offers';
 
 function ListOfCities(): JSX.Element {
   const activeCity = useAppSelector(getSelectedCity);
   const dispatch = useAppDispatch();
 
-  const handleChangeCity = (city: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleChangeCity = (city: OffersDataCityName, event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     dispatch(changeCity({city}));
   };

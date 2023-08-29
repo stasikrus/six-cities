@@ -38,7 +38,6 @@ function OfferCard({card}: OfferCardProps): JSX.Element {
         <a href={href}>
           <img
             className="place-card__image"
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             src={previewImage}
             width="260"
             height="200"
