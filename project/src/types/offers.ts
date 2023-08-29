@@ -1,16 +1,23 @@
 export type OffersData = {
-  id: number,
-  href: string,
-  img: string,
-  price: number,
-  name: string,
-  type: string,
-  premium: boolean,
-  location: OffersDataLocation,
-  city: string
+  id: number;
+  href: string;
+  price: number;
+  rating: number;
+  title: string;
+  isPremium: boolean;
+  isFavorite: boolean;
+  previewImage: string;
+  type: 'apartment' | 'room' | 'house' | 'hotel';
+  city: {
+    name: OffersDataCityName,
+    location: OffersDataLocation
+  }
 }
+
+export type OffersDataCityName = 'Amsterdam' | 'Paris' | 'Cologne' |'Brussels' |'Hamburg' |'Dusseldorf';
 
 export type OffersDataLocation = {
   latitude: number,
-  longitude: number
+  longitude: number,
+  zoom: number
 }

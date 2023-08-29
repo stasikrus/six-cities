@@ -15,7 +15,7 @@ function OfferCard({card}: OfferCardProps): JSX.Element {
   // const dispatch = useDispatch();
   // console.log(card)
 
-  const {href, img, price, name, type, premium} = card;
+  const {href, previewImage, price, title, type, isPremium} = card;
   // const activeBookmarkClass = is_favorite ? `place-card__bookmark-button--active` : ``;
 
   // const handleMouseEnter = () => {
@@ -32,13 +32,14 @@ function OfferCard({card}: OfferCardProps): JSX.Element {
     <article className={'cities__place-card place-card'}>
 
       <div className="place-card__mark">
-        <span>{premium ? 'Premium' : ''}</span>
+        <span>{isPremium ? 'Premium' : ''}</span>
       </div>
       <div className={'near-places__image-wrapper place-card__image-wrapper'}>
         <a href={href}>
           <img
             className="place-card__image"
-            src={img}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            src={previewImage}
             width="260"
             height="200"
             alt="Place image"
@@ -65,7 +66,7 @@ function OfferCard({card}: OfferCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          {name}
+          {title}
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

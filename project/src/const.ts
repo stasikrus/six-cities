@@ -5,6 +5,8 @@ export const SortType = {
   POPULAR: 'Popular'
 } as const;
 
+export const DEFAULT_CITY = 'Amsterdam';
+
 export enum AppRoute {
   Root = '/'
-};
+}
