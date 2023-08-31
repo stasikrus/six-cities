@@ -1,66 +1,47 @@
-// import React, { useEffect, useRef } from "react";
-// import leaflet from 'leaflet';
-// import PropTypes from 'prop-types';
-// import { getActiveHoverOffer } from "../../store/selectors";
-import { useAppSelector, useAppDispatch } from "../../hooks";
-import { useRef, useEffect } from "react";
-import useMap from "../../hooks/useMap";
-// import { ActionCreator } from "../../store/action";
+import { useEffect, useRef } from 'react';
+import { Map, TileLayer, Marker, Icon } from 'leaflet';
+import { OffersData } from '../../types/offers';
 
-// import "leaflet/dist/leaflet.css";
-import { getActiveHoverOffer } from "../../store/selectors";
+import 'leaflet/dist/leaflet.css';
 
-const Map = ({ points, heightMap }) => {
-
-  const mapRef = useRef(null);
-  const activeHoverOffer = useAppSelector(getActiveHoverOffer);
-  const dispatch = useAppDispatch();
-
-  const currentCityMap = points[0].city.location;
-
-  const map = useMap(mapRef, city);
-
-  useEffect(() => {
-    const markers = [];
-
-    points.forEach((point) => {
-      const customIcon = leaflet.icon({
-        iconUrl: point.id === activeHoverOffer ? `./img/pin-active.svg`: `./img/pin.svg`,
-        iconSize: [27, 39]
-      });
-
-      const marker = leaflet.marker({
-        lat: point.location.latitude,
-        lng: point.location.longitude
-      },
-      {
-        icon: customIcon
-      })
-      .addTo(mapRef.current)
-      .bindPopup(point.title);
-      markers.push(marker);
-    });
-
-    return () => {
-      markers.forEach(marker => marker.remove());
-    };
-
-  }, [activeHoverOffer, points]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(ActionCreator.hoverOffer(null));
-    }
-  }, []);
-
-  return (
-    <div id="map" style={{ height: `${heightMap}px` }}></div>
-  );
+type MapProps = {
+  points: OffersData[];
+  heightMap: number;
 };
 
-Map.propTypes = {
-  points: PropTypes.array.isRequired,
-  heightMap: PropTypes.number.isRequired,
-}
+const MapComponent = ({ points, heightMap }: MapProps) => {
+  const mapRef = useRef(null);
 
-export default React.memo(Map);
+  useEffect(() => {
+    if (mapRef.current) {
+      const currentCity = points[0].city;
+      const mapInstance = new Map(mapRef.current, {
+        center: [currentCity.location.latitude, currentCity.location.longitude],
+        zoom: currentCity.location.zoom,
+      });
+
+      new TileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      }).addTo(mapInstance);
+
+      points.forEach((point) => {
+        const icon = new Icon({
+          iconUrl: './img/pin.svg',
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+        });
+
+        new Marker([point.location.latitude, point.location.longitude], { icon }).addTo(mapInstance);
+      });
+
+      // Cleanup
+      return () => {
+        mapInstance.remove();
+      };
+    }
+  }, [points]);
+
+  return <div id="map" style={{ height: `${heightMap}px` }} ref={mapRef}></div>;
+};
+
+export default MapComponent;
