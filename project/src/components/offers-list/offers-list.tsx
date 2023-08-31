@@ -1,11 +1,15 @@
 import OfferCard from '../offer-card/offer-card';
-import { offersData } from '../../mocks/offers';
+import { OffersData } from '../../types/offers';
 
-function OfferList(): JSX.Element {
+type OfferListProps = {
+  offers: OffersData[];
+};
+
+function OfferList({offers}: OfferListProps): JSX.Element {
   return (
     <>
-      {offersData.map((offer) => (
-        <OfferCard key={offer.id} card={offer} /> //Проверить тип массива который передается
+      {offers.map((offer) => (
+        <OfferCard key={offer.id} card={offer} />
       ))}
     </>
   );

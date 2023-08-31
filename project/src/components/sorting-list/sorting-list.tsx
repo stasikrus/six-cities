@@ -1,41 +1,45 @@
 import { SortType } from '../../const';
-
-// import React, { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { ActionCreator } from "../../store/action";
-// import { getActiveSorting } from "../../store/selectors";
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getActiveSorting } from '../../store/selectors';
+import { useState } from 'react';
+import { changeSort } from '../../store/action';
+import { SortingType } from '../../types/state';
 
 function SortingList(): JSX.Element {
-  // const dispatch = useDispatch();
-  // const activeSorting = useSelector(getActiveSorting);
-  // const [isOpened, setIsOpened] = useState(false);
+  const dispatch = useAppDispatch();
+  const activeSorting = useAppSelector(getActiveSorting);
+  const [isOpened, setIsOpened] = useState(false);
 
-  // const changeSort = (filter) => {
-  //   dispatch(ActionCreator.changeSort(filter));
-  // };
+  const changingSort = (filter: SortingType) => {
+    dispatch(changeSort({ filter }));
+  };
 
-  // const handleChangeSort = (filter) => () => {
-  //   changeSort(filter);
-  //   setIsOpened(false);
-  // };
+  const handleChangeSort = (filter: SortingType) => () => {
+    changingSort(filter);
+    setIsOpened(false);
+  };
 
-  // const toggleOpen = () => {
-  //   setIsOpened(!isOpened);
-  // };
+  const toggleOpen = () => {
+    setIsOpened(!isOpened);
+  };
 
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by</span>
-      <span className="places__sorting-type" tabIndex={0}>
-        {/* {activeSorting} */}
+      <span className="places__sorting-type" tabIndex={0} onClick={toggleOpen}>
+        {activeSorting}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select" />
         </svg>
       </span>
-      <ul className="places__options places__options--custom">
+      <ul className={`places__options places__options--custom ${isOpened ? 'places__options--opened' : ''}`}>
         {Object.values(SortType).map((value) => (
-          <li key={value} className="places__option" tabIndex={0}>
-            {/* onClick={handleChangeSort(value)} */}
+          <li
+            key={value}
+            className={`places__option ${activeSorting === value ? 'places__option--active' : ''}`}
+            tabIndex={0}
+            onClick={handleChangeSort(value)}
+          >
             {value}
           </li>
         ))}
@@ -44,5 +48,4 @@ function SortingList(): JSX.Element {
   );
 }
 
-// export default React.memo(SortingList);
 export default SortingList;

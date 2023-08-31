@@ -1,5 +1,5 @@
 import MainPage from '../../pages/main-page/main-page';
-import NotFoundPage from '../../pages/main-page/not-found-page/not-found-page';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppRoute } from '../../const';
 

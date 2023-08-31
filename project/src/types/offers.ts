@@ -1,3 +1,5 @@
+import { CITY } from "../mocks/cities";
+
 export type OffersData = {
   id: number;
   href: string;
@@ -8,13 +10,16 @@ export type OffersData = {
   isFavorite: boolean;
   previewImage: string;
   type: 'apartment' | 'room' | 'house' | 'hotel';
-  city: {
-    name: OffersDataCityName,
-    location: OffersDataLocation
-  }
+  city: City
 }
 
-export type OffersDataCityName = 'Amsterdam' | 'Paris' | 'Cologne' |'Brussels' |'Hamburg' |'Dusseldorf';
+export type OffersDataCityName = typeof CITY[number];
+
+export type City = {
+  name: OffersDataCityName;
+  location: OffersDataLocation;
+}
+
 
 export type OffersDataLocation = {
   latitude: number,

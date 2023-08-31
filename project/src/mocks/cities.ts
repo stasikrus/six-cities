@@ -1,10 +1,8 @@
-import { OffersDataCityName } from '../types/offers';
-
-export const CITY: OffersDataCityName[] = [
+export const CITY = [
   'Amsterdam',
   'Paris',
   'Cologne',
   'Brussels',
   'Hamburg',
   'Dusseldorf'
-];
+] as const;
