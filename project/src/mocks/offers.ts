@@ -43,8 +43,8 @@ export const offersData: OffersData[] = [
     city: {
       name: 'Paris',
       location: {
-        latitude: 48.85833478555735,
-        longitude: 2.294416925129237,
+        latitude: 48.8534,
+        longitude: 2.3488,
         zoom: 13
       }
     }
