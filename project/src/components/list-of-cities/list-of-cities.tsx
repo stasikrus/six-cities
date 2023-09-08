@@ -1,4 +1,4 @@
-import { CITY } from '../../mocks/cities';
+import { CITY } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getSelectedCity } from '../../store/selectors';
 import { changeCity } from '../../store/action';

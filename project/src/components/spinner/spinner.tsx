@@ -1,11 +1,11 @@
-import "./spinner.css";
+import './spinner.css';
 
-function LoadingScreen(): JSX.Element {
+function Spinner(): JSX.Element {
   return (
     <div className="loader-container">
-        <div className="loader"></div>
+      <div className="loader"></div>
     </div>
   );
-};
+}
 
-export default LoadingScreen;
+export default Spinner;

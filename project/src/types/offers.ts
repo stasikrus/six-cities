@@ -1,17 +1,44 @@
-import { CITY } from "../mocks/cities";
+import { CITY } from "../const"
+
+// export type OffersData = {
+//   id: number;
+//   href: string;
+//   price: number;
+//   rating: number;
+//   title: string;
+//   isPremium: boolean;
+//   isFavorite: boolean;
+//   location: Location;
+//   previewImage: string;
+//   type: 'apartment' | 'room' | 'house' | 'hotel';
+//   city: City
+// }
 
 export type OffersData = {
-  id: number;
-  href: string;
-  price: number;
-  rating: number;
-  title: string;
-  isPremium: boolean;
-  isFavorite: boolean;
-  location: Location;
-  previewImage: string;
-  type: 'apartment' | 'room' | 'house' | 'hotel';
+  bedrooms: number
   city: City
+  description: string
+  goods: [string]
+  host: Host
+  id: number
+  href: string
+  images: [string]
+  isFavorite: boolean
+  isPremium: boolean
+  location: Location
+  maxAdults: number
+  previewImage: string
+  price: number
+  rating: number
+  title: string
+  type: 'apartment' | 'room' | 'house' | 'hotel';
+}
+
+export type Host = {
+  avatarUrl: string
+  id: number
+  isPro: boolean
+  name: string
 }
 
 export type OffersDataCityName = typeof CITY[number];

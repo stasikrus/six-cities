@@ -3,13 +3,12 @@ import ListOfCities from '../../components/list-of-cities/list-of-cities';
 import SortingList from '../../components/sorting-list/sorting-list';
 import OfferList from '../../components/offers-list/offers-list';
 import { useAppSelector } from '../../hooks';
-import { getFilteredOffers, getSelectedCity, getFilteredOffersByCity } from '../../store/selectors';
+import { getFilteredOffers, getSelectedCity } from '../../store/selectors';
 import MapComponent from '../../components/map/map';
 function MainPage(): JSX.Element {
 
   const filteredOffers = useAppSelector(getFilteredOffers);
   const selectedCity = useAppSelector(getSelectedCity);
-  const filteredOffersByCity = useAppSelector(getFilteredOffersByCity);
 
   return (
     <div className="page page--gray page--main">
@@ -58,7 +57,7 @@ function MainPage(): JSX.Element {
             <div className="cities__right-section">
               <section className="cities__map map">
                 <MapComponent
-                  points={filteredOffersByCity}
+                  points={filteredOffers}
                   heightMap={754}
                 />
               </section>

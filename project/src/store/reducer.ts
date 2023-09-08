@@ -1,15 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, changeSort, hoverOffer } from './action';
+import { changeCity, changeSort, hoverOffer, loadOffers, requireAuthorization, setDataLoadedStatus } from './action';
 import { DEFAULT_CITY } from '../const';
-import { offersData } from '../mocks/offers';
-import { SortType } from '../const';
+import { SortType, AuthorizationStatus } from '../const';
 import { InitialStateType } from '../types/state';
 
 const initialState: InitialStateType = {
   city: DEFAULT_CITY,
-  offers: offersData,
+  offers: [],
   sorting: SortType.POPULAR,
-  hoveredOffer: null
+  hoveredOffer: null,
+  authorizationStatus: AuthorizationStatus.UNKNOWN,
+  isDataLoaded: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -22,6 +23,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(hoverOffer, (state, action) => {
       state.hoveredOffer = action.payload.id;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setDataLoadedStatus, (state, action) => {
+      state.isDataLoaded = action.payload;
     });
 });
 

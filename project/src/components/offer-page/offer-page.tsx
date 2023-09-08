@@ -1,33 +1,47 @@
-// import React from "react";
-// import { Link, useParams } from "react-router-dom";
-// import CommentForm from "../comment-form/comment-form";
-// import ReviewsList from "../reviews-list/reviews-list";
-// import Map from "../map/map";
-// import OfferList from "../offers-list/offers-list";
-// import { getAuthorizationStatus } from "../../store/selectors";
-// import { useSelector } from "react-redux";
-// import { AuthorizationStatus } from "../../const";
-// import LoadingScreen from "../loading-screen/loading-screen";
-// import HeaderNav from "../header-nav/header-nav";
-// import useOfferData from "../../hooks/useOfferData";
-// import useHandleToBookmarksClick from "../../hooks/useHandleToBookmarksClick";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import Spinner from '../spinner/spinner';
+import { useState, useEffect } from 'react';
+import { api } from '../../store';
+import { OfferData } from '../../types/offer';
+import { OffersData } from '../../types/offers';
+import { Link } from 'react-router-dom';
+import OfferList from '../offers-list/offers-list';
 
 const OfferPage = () => {
+  const [offer, setOffer] = useState<OfferData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [offersNear, setOffersNear] = useState<OffersData[] | null>(null);
 
   const { id } = useParams();
-  // const authorizationStatus = useSelector(getAuthorizationStatus);
-  // const { offer, offersNear, loading } = useOfferData(id);
 
-  // const handleToBookmarksClick = useHandleToBookmarksClick(id);
+  useEffect(() => {
+    const fetchDataOffer = async () => {
+      try {
+        const [offerResponse, offersNearResponse] = await Promise.all([
+          api.get<OfferData>(`/hotels/${id!}`),
+          api.get<OffersData[]>(`/hotels/${id!}/nearby`)
+        ]);
 
-  // if (loading) {
-  // return <LoadingScreen />;
-  // };
+        setOffer(offerResponse.data);
+        setOffersNear(offersNearResponse.data);
+        setLoading(false);
 
-  const { title, is_premium, price, images, bedrooms, max_adults, rating, description, goods, host, is_favorite, } = offer;
-  const { avatar_url, is_pro, name } = host;
-  const bookMarkActiveClass = is_favorite ? `property__bookmark-button--active` : ``;
+      } catch (error) {
+        // eslint-disable-next-line
+        console.error(error)
+      }
+    };
+
+    fetchDataOffer();
+  }, [id]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  const { title, isPremium, price, images, bedrooms, maxAdults, rating, description, goods, host, isFavorite } = offer!;
+  const { avatarUrl, isPro, name } = host;
+  const bookMarkActiveClass = isFavorite ? 'property__bookmark-button--active' : '';
 
   return (
     <div className="page">
@@ -47,7 +61,7 @@ const OfferPage = () => {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <HeaderNav />
+                {/* <HeaderNav /> */}
               </ul>
             </nav>
           </div>
@@ -58,8 +72,8 @@ const OfferPage = () => {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {images.map((image, index) => (
-                <div className="property__image-wrapper" key={`${index}-${id}`}>
+              {images.map((image) => (
+                <div className="property__image-wrapper" key={`photo-${id!}`}>
                   <img
                     className="property__image"
                     src={image}
@@ -72,14 +86,14 @@ const OfferPage = () => {
           <div className="property__container container">
             <div className="property__wrapper">
               <div className="property__mark">
-                <span>{is_premium ? `Premium` : ``}</span>
+                <span>{isPremium ? 'Premium' : ''}</span>
               </div>
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
                 <button
                   className={`property__bookmark-button button ${bookMarkActiveClass}`}
                   type="button"
-                  onClick={handleToBookmarksClick}
+                  // onClick={handleToBookmarksClick}
                 >
                   <svg
                     className="property__bookmark-icon"
@@ -93,7 +107,7 @@ const OfferPage = () => {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: `80%` }}></span>
+                  <span style={{ width: '80%' }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">
@@ -108,7 +122,7 @@ const OfferPage = () => {
                   <span>{bedrooms} Bedrooms</span>
                 </li>
                 <li className="property__feature property__feature--adults">
-                  <span>Max {max_adults} adults</span>
+                  <span>Max {maxAdults} adults</span>
                 </li>
               </ul>
               <div className="property__price">
@@ -118,10 +132,10 @@ const OfferPage = () => {
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {goods.map((item, index) => (
+                  {goods.map((item) => (
                     <li
                       className="property__inside-item"
-                      key={`${id}-${index}`}
+                      key={`${id!}-goods`}
                     >
                       {item}
                     </li>
@@ -135,17 +149,17 @@ const OfferPage = () => {
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="property__avatar user__avatar"
-                      src={avatar_url}
+                      src={avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
                   <span className="property__user-name">{name}</span>
-                  {is_pro ? (
+                  {isPro ? (
                     <span className="property__user-status">Pro</span>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
                 <div className="property__description">
@@ -153,15 +167,15 @@ const OfferPage = () => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <ReviewsList />
+                {/* <ReviewsList />
                 {authorizationStatus === AuthorizationStatus.AUTH && (
                   <CommentForm hotel_id={id} />
-                )}
+                )} */}
               </section>
             </div>
           </div>
           <section className="property__map map">
-            <Map points={offersNear} heightMap={579} />
+            {/* <Map points={offersNear} heightMap={579} /> */}
           </section>
         </section>
         <div className="container">
@@ -170,7 +184,7 @@ const OfferPage = () => {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <OfferList offerCards={offersNear} isNearOffer={true} />
+              <OfferList offers={offersNear!} />
             </div>
           </section>
         </div>

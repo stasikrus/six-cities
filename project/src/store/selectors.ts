@@ -6,6 +6,7 @@ export const getDefaultOffers = (state: State) => state.offers;
 export const getSelectedCity = (state: State) => state.city;
 export const getActiveSorting = (state: State) => state.sorting;
 export const getActiveHoverOffer = (state: State) => state.hoveredOffer;
+export const getAuthorizationStatus = (state: State) => state.authorizationStatus;
 
 export const getFilteredOffersByCity = createSelector(
   [getDefaultOffers, getSelectedCity],
