@@ -6,6 +6,13 @@ import { OfferData } from '../../types/offer';
 import { OffersData } from '../../types/offers';
 import { Link } from 'react-router-dom';
 import OfferList from '../offers-list/offers-list';
+import { UserComments } from '../../types/comments';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { storeComments } from '../../store/action';
+import CommentsList from '../comments-list/comments-list';
+import CommentForm from '../comment-form/comment-form';
+import { AuthorizationStatus } from '../../const';
+import { getAuthorizationStatus } from '../../store/selectors';
 
 const OfferPage = () => {
   const [offer, setOffer] = useState<OfferData | null>(null);
@@ -13,17 +20,22 @@ const OfferPage = () => {
   const [offersNear, setOffersNear] = useState<OffersData[] | null>(null);
 
   const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     const fetchDataOffer = async () => {
       try {
-        const [offerResponse, offersNearResponse] = await Promise.all([
+        const [offerResponse, offersNearResponse, offerComments] = await Promise.all([
           api.get<OfferData>(`/hotels/${id!}`),
-          api.get<OffersData[]>(`/hotels/${id!}/nearby`)
+          api.get<OffersData[]>(`/hotels/${id!}/nearby`),
+          api.get<UserComments[]>(`/comments/${id!}`)
         ]);
 
         setOffer(offerResponse.data);
         setOffersNear(offersNearResponse.data);
+        dispatch(storeComments(offerComments.data));
+
         setLoading(false);
 
       } catch (error) {
@@ -73,7 +85,7 @@ const OfferPage = () => {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {images.map((image) => (
-                <div className="property__image-wrapper" key={`photo-${id!}`}>
+                <div className="property__image-wrapper" key={`${id!}-image-${image}`}>
                   <img
                     className="property__image"
                     src={image}
@@ -135,7 +147,7 @@ const OfferPage = () => {
                   {goods.map((item) => (
                     <li
                       className="property__inside-item"
-                      key={`${id!}-goods`}
+                      key={`${id!}-goods-${item}`}
                     >
                       {item}
                     </li>
@@ -167,10 +179,10 @@ const OfferPage = () => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                {/* <ReviewsList />
+                <CommentsList />
                 {authorizationStatus === AuthorizationStatus.AUTH && (
-                  <CommentForm hotel_id={id} />
-                )} */}
+                  <CommentForm hotelId={Number(id)} />
+                )}
               </section>
             </div>
           </div>

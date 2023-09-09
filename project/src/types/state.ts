@@ -2,6 +2,7 @@ import { store } from "../store";
 import { SortType, AuthorizationStatus } from "../const";
 import { OffersData } from "./offers";
 import { OffersDataCityName } from "./offers";
+import { UserComments } from "./comments";
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -13,6 +14,7 @@ export type InitialStateType = {
   hoveredOffer: HoverOfferType,
   authorizationStatus: AuthorizationStatusType,
   isDataLoaded: boolean,
+  commentsMap: null | UserComments[]
 };
 
 export type SortingType = typeof SortType[keyof typeof SortType];
