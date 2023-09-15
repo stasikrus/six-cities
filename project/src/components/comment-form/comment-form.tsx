@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { useAppDispatch } from '../../hooks';
-import { appendUserComment } from '../../store/api-actions';
+import { UserComments } from '../../types/comments';
+import { api } from '../../store';
+import { CommentValidation } from '../../const';
 
 type CommentFormProps = {
   hotelId: number;
+  setComments: React.Dispatch<React.SetStateAction<UserComments[] | null>>;
 };
 
-const CommentForm = ({ hotelId }: CommentFormProps) => {
+const CommentForm = ({ hotelId, setComments }: CommentFormProps) => {
   const [rating, setRating] = useState<null | number>(null);
   const [review, setReview] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const dispatch = useAppDispatch();
 
   const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.target.value));
@@ -23,39 +24,38 @@ const CommentForm = ({ hotelId }: CommentFormProps) => {
   const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    const formData = {
-      rating: rating,
-      comment: review
-    };
+    const submitForm = async () => {
+      const formData = {
+        rating: rating,
+        comment: review
+      };
 
-    // Проверка условий для активации кнопки отправки
-    if (!formData.rating || formData.comment.length < 50 || formData.comment.length > 300) {
-      // Показать сообщение об ошибке или предупреждение
-      return;
-    }
+      if (!formData.rating || formData.comment.length < CommentValidation.MinLength
+        || formData.comment.length > CommentValidation.MaxLength)
+      { return;
+      }
 
-    setIsSubmitting(true);
+      setIsSubmitting(true);
 
-    dispatch(appendUserComment({
-      id: hotelId,
-      comment: formData.comment,
-      rating: formData.rating
-    }))
-      .then(() => {
-        // Обработка успешного ответа
+      try {
+        const { data } = await api.post<UserComments[]>(`/comments/${hotelId}`, {
+          comment: formData.comment,
+          rating: formData.rating
+        });
+        setComments(data);
         setRating(null);
         setReview('');
         setIsSubmitting(false);
-      })
-      .catch((error) => {
-        // Обработка ошибки
+      } catch (error) {
         // eslint-disable-next-line
         console.error("Error:", error);
         setIsSubmitting(false);
-      });
+      }
+    };
+
+    submitForm();
   };
 
-  // Проверка условий для активации кнопки отправки
   const isSubmitDisabled = !rating || review.length < 50 || review.length > 300;
 
   return (

@@ -1,51 +1,34 @@
 import { useParams } from 'react-router-dom';
-import Spinner from '../spinner/spinner';
-import { useState, useEffect } from 'react';
-import { api } from '../../store';
-import { OfferData } from '../../types/offer';
-import { OffersData } from '../../types/offers';
+import Spinner from '../../components/spinner/spinner';
 import { Link } from 'react-router-dom';
-import OfferList from '../offers-list/offers-list';
-import { UserComments } from '../../types/comments';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { storeComments } from '../../store/action';
-import CommentsList from '../comments-list/comments-list';
-import CommentForm from '../comment-form/comment-form';
+import OfferList from '../../components/offers-list/offers-list';
+import { useAppSelector } from '../../hooks';
+import CommentsList from '../../components/comments-list/comments-list';
+import CommentForm from '../../components/comment-form/comment-form';
 import { AuthorizationStatus } from '../../const';
 import { getAuthorizationStatus } from '../../store/selectors';
+import HeaderNav from '../../components/header-nav/header-nav';
+import MapComponent from '../../components/map/map';
+import useHandleToBookmarksClick from '../../hooks/useHandleToBookmarksClick';
+import useOfferData from '../../hooks/useOfferData';
+
 
 const OfferPage = () => {
-  const [offer, setOffer] = useState<OfferData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [offersNear, setOffersNear] = useState<OffersData[] | null>(null);
 
   const { id } = useParams();
-  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const { offer, setOffer, offersNear, loading, comments, setComments } = useOfferData(+id!);
 
-  useEffect(() => {
-    const fetchDataOffer = async () => {
-      try {
-        const [offerResponse, offersNearResponse, offerComments] = await Promise.all([
-          api.get<OfferData>(`/hotels/${id!}`),
-          api.get<OffersData[]>(`/hotels/${id!}/nearby`),
-          api.get<UserComments[]>(`/comments/${id!}`)
-        ]);
+  const handleToBookmarksClick = useHandleToBookmarksClick({
+    id: +id!,
+    onFailure: () => { toggleFavorite(); }
+  });
 
-        setOffer(offerResponse.data);
-        setOffersNear(offersNearResponse.data);
-        dispatch(storeComments(offerComments.data));
-
-        setLoading(false);
-
-      } catch (error) {
-        // eslint-disable-next-line
-        console.error(error)
-      }
-    };
-
-    fetchDataOffer();
-  }, [id]);
+  const toggleFavorite = () => {
+    if (offer !== null) {
+      setOffer({ ...offer, isFavorite: !offer.isFavorite });
+    }
+  };
 
   if (loading) {
     return <Spinner />;
@@ -73,7 +56,7 @@ const OfferPage = () => {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                {/* <HeaderNav /> */}
+                <HeaderNav />
               </ul>
             </nav>
           </div>
@@ -105,7 +88,10 @@ const OfferPage = () => {
                 <button
                   className={`property__bookmark-button button ${bookMarkActiveClass}`}
                   type="button"
-                  // onClick={handleToBookmarksClick}
+                  onClick={() => {
+                    toggleFavorite();
+                    handleToBookmarksClick();
+                  }}
                 >
                   <svg
                     className="property__bookmark-icon"
@@ -179,15 +165,15 @@ const OfferPage = () => {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <CommentsList />
+                {comments && <CommentsList offerComments={comments} />}
                 {authorizationStatus === AuthorizationStatus.AUTH && (
-                  <CommentForm hotelId={Number(id)} />
+                  <CommentForm hotelId={Number(id)} setComments={setComments} />
                 )}
               </section>
             </div>
           </div>
           <section className="property__map map">
-            {/* <Map points={offersNear} heightMap={579} /> */}
+            <MapComponent points={offersNear!} heightMap={579} />
           </section>
         </section>
         <div className="container">
@@ -196,7 +182,7 @@ const OfferPage = () => {
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <OfferList offers={offersNear!} />
+              <OfferList offers={offersNear!} isNearOffer />
             </div>
           </section>
         </div>

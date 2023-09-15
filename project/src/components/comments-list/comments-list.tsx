@@ -1,9 +1,11 @@
-import { useAppSelector } from '../../hooks';
-import { getComments } from '../../store/selectors';
 import CommentsItem from '../comments-item/comments-item';
+import { UserComments } from '../../types/comments';
 
-const CommentsList = () => {
-  const offerComments = useAppSelector(getComments);
+type CommentsListProps = {
+  offerComments: UserComments[];
+};
+
+const CommentsList = ({ offerComments }: CommentsListProps) => {
 
   if (!offerComments) {
     return null;

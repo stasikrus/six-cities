@@ -3,13 +3,15 @@ import { OffersData } from '../../types/offers';
 
 type OfferListProps = {
   offers: OffersData[];
+  isNearOffer: boolean;
 };
 
-function OfferList({offers}: OfferListProps): JSX.Element {
+function OfferList({offers, isNearOffer}: OfferListProps): JSX.Element {
+
   return (
     <>
       {offers.map((offer) => (
-        <OfferCard key={offer.id} card={offer} />
+        <OfferCard key={offer.id} card={offer} isNearOffer={isNearOffer} />
       ))}
     </>
   );

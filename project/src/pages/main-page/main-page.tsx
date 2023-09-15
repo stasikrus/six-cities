@@ -51,7 +51,7 @@ function MainPage(): JSX.Element {
               </b>
               <SortingList />
               <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={filteredOffers} />
+                <OfferList offers={filteredOffers} isNearOffer={false} />
               </div>
             </section>
             <div className="cities__right-section">

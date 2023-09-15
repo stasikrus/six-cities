@@ -1,19 +1,5 @@
 import { CITY } from "../const"
 
-// export type OffersData = {
-//   id: number;
-//   href: string;
-//   price: number;
-//   rating: number;
-//   title: string;
-//   isPremium: boolean;
-//   isFavorite: boolean;
-//   location: Location;
-//   previewImage: string;
-//   type: 'apartment' | 'room' | 'house' | 'hotel';
-//   city: City
-// }
-
 export type OffersData = {
   bedrooms: number
   city: City

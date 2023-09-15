@@ -13,8 +13,15 @@ export const AuthorizationStatus = {
   UNKNOWN: 'UNKNOWN'
 } as const;
 
+export const ERROR_MESSAGES = {
+  BAD_REQUEST: 'Bad request',
+  UNAUTHORIZED: 'You are not logged in or you do not have permission to this page.',
+  NOT_FOUND: 'Resource not found'
+} as const;
+
 export enum APIRoute {
   Offers = '/hotels',
+  Favorites = '/favorite',
   Login = '/login',
   Logout = '/logout',
 }
@@ -22,6 +29,13 @@ export enum APIRoute {
 export enum AppRoute {
   Root = '/',
   Offer = '/offer/:id',
+  Login = '/login',
+  Favorites = '/favorites'
+}
+
+export enum CommentValidation {
+  MinLength = 50,
+  MaxLength = 300
 }
 
 export const CITY = [
