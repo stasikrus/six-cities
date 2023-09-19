@@ -1,8 +1,8 @@
-import { CITY } from '../../mocks/cities';
+import { CITY } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getSelectedCity } from '../../store/selectors';
-import { changeCity } from '../../store/action';
 import { OffersDataCityName } from '../../types/offers';
+import { changeCity } from '../../store/site-process/site-process';
 
 function ListOfCities(): JSX.Element {
   const activeCity = useAppSelector(getSelectedCity);

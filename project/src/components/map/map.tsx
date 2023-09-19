@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Map, TileLayer, Marker, Icon } from 'leaflet';
 import { OffersData } from '../../types/offers';
 import { getActiveHoverOffer } from '../../store/selectors';
@@ -58,4 +58,4 @@ const MapComponent = ({ points, heightMap }: MapProps) => {
   return <div id="map" style={{ height: `${heightMap}px` }}></div>;
 };
 
-export default MapComponent;
+export default memo(MapComponent);
