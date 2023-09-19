@@ -1,4 +1,4 @@
-import { CITY } from "../const"
+import { CITY } from '../const';
 
 export type OffersData = {
   bedrooms: number

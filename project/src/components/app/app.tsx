@@ -9,9 +9,10 @@ import { useAppSelector } from '../../hooks';
 import history from '../../services/browser-history';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import PrivateRoute from '../private-route/private-route';
+import { getIsDataLoading } from '../../store/selectors';
 
 function App(): JSX.Element {
-  const {isDataLoaded} = useAppSelector((state) => state);
+  const isDataLoaded = useAppSelector(getIsDataLoading);
 
   if (isDataLoaded) {
     return (

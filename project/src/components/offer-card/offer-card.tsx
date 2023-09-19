@@ -2,8 +2,8 @@
 import {OffersData} from '../../types/offers';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
-import { hoverOffer } from '../../store/action';
 import useHandleToBookmarksClick from '../../hooks/useHandleToBookmarksClick';
+import { hoverOffer } from '../../store/site-process/site-process';
 
 type OfferCardProps = {
   card: OffersData;

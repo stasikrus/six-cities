@@ -2,8 +2,9 @@ import { getAuthorizationStatus, getDefaultOffers, getIsFavoriteById } from '../
 import { AuthorizationStatus } from '../const';
 import history from '../services/browser-history';
 import { useAppDispatch, useAppSelector } from '.';
-import { updateOffers } from '../store/action';
-import { appendFavorite } from '../store/api-actions';
+import { updateOffers } from '../store/site-data/site-data';
+import { api } from '../store';
+import { AppRoute } from '../const';
 
 type useHandleToBookmarksClickProps = {
   id: number;
@@ -11,6 +12,7 @@ type useHandleToBookmarksClickProps = {
 }
 
 const useHandleToBookmarksClick = ({id, onFailure}: useHandleToBookmarksClickProps) => {
+  
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const defaultOffers = useAppSelector(getDefaultOffers);
@@ -18,26 +20,33 @@ const useHandleToBookmarksClick = ({id, onFailure}: useHandleToBookmarksClickPro
 
   return () => {
     if (authorizationStatus === AuthorizationStatus.NO_AUTH) {
-      history.push('/login');
+      history.push(AppRoute.Login);
     } else {
-    // Находим индекс нужного элемента
-      const index = defaultOffers.findIndex((offer) => offer.id === id);
 
-      if (index !== -1) {
-        // Создаем копию массива и обновляем нужный элемент
-        const newOffers = [...defaultOffers];
-        newOffers[index] = {
-          ...newOffers[index],
-          isFavorite: !newOffers[index].isFavorite,
-        };
+      if (defaultOffers) {
+
+        const newOffers = defaultOffers.map((offer) => {
+          if (offer.id === id) {
+            return { ...offer, isFavorite: !offer.isFavorite };
+          }
+          return offer;
+        });
 
         dispatch(updateOffers(newOffers));
-        dispatch(appendFavorite({ id, status: !isFavorite ? 1 : 0 })).catch(() => {
-          if (onFailure) {
-            onFailure();
+        const postToFavorite = async () => {
+          try {
+            await api.post(`/favorite/${id}/${!isFavorite ? 1 : 0}`);
+          } catch (error) {
+            if (onFailure) {
+              onFailure();
+            }
           }
-        });
+        };
+
+        postToFavorite();
       }
+
+      history.push(AppRoute.Root);
     }
   };
 };

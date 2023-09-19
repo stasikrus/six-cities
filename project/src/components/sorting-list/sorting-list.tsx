@@ -2,8 +2,8 @@ import { SortType } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getActiveSorting } from '../../store/selectors';
 import { useState } from 'react';
-import { changeSort } from '../../store/action';
 import { SortingType } from '../../types/state';
+import { changeSort } from '../../store/site-process/site-process';
 
 function SortingList(): JSX.Element {
   const dispatch = useAppDispatch();

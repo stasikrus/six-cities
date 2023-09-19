@@ -19,6 +19,15 @@ export const ERROR_MESSAGES = {
   NOT_FOUND: 'Resource not found'
 } as const;
 
+export const CITY = [
+  'Amsterdam',
+  'Paris',
+  'Cologne',
+  'Brussels',
+  'Hamburg',
+  'Dusseldorf'
+] as const;
+
 export enum APIRoute {
   Offers = '/hotels',
   Favorites = '/favorite',
@@ -38,11 +47,9 @@ export enum CommentValidation {
   MaxLength = 300
 }
 
-export const CITY = [
-  'Amsterdam',
-  'Paris',
-  'Cologne',
-  'Brussels',
-  'Hamburg',
-  'Dusseldorf'
-] as const;
+export enum StoreSlice {
+  SiteData = 'SITE_DATA',
+  SiteProcess = 'SITE_PROCESS',
+  UserProcess = 'USER_PROCESS',
+}
+

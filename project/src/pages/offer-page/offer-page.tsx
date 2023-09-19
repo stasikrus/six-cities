@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import Spinner from '../../components/spinner/spinner';
-import { Link } from 'react-router-dom';
 import OfferList from '../../components/offers-list/offers-list';
 import { useAppSelector } from '../../hooks';
 import CommentsList from '../../components/comments-list/comments-list';
@@ -40,29 +39,7 @@ const OfferPage = () => {
 
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link" to="/">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width="81"
-                  height="41"
-                />
-              </Link>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <HeaderNav />
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <HeaderNav />
       <main className="page__main page__main--property">
         <section className="property">
           <div className="property__gallery-container container">
