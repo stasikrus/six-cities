@@ -8,7 +8,7 @@ export const getSelectedCity = ({[StoreSlice.SiteProcess]: SITE_PROCESS}: State)
 export const getActiveSorting = ({[StoreSlice.SiteProcess]: SITE_PROCESS}: State) => SITE_PROCESS.sorting;
 export const getActiveHoverOffer = ({[StoreSlice.SiteProcess]: SITE_PROCESS}: State) => SITE_PROCESS.hoveredOffer;
 export const getAuthorizationStatus = ({[StoreSlice.UserProcess]: USER_PROCESS}: State) => USER_PROCESS.authorizationStatus;
-export const getUserLogin = ({[StoreSlice.UserProcess]: USER_PROCESS}: State): string | null | undefined => USER_PROCESS.userData?.name;
+export const getUserLogin = ({[StoreSlice.UserProcess]: USER_PROCESS}: State): string | null | undefined => USER_PROCESS.userData?.email;
 export const getIsDataLoading = ({[StoreSlice.SiteData]: SITE_DATA}: State) => SITE_DATA.isDataLoaded;
 
 export const getFilteredOffersByCity = createSelector(
