@@ -12,7 +12,7 @@ type useHandleToBookmarksClickProps = {
 }
 
 const useHandleToBookmarksClick = ({id, onFailure}: useHandleToBookmarksClickProps) => {
-  
+
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const defaultOffers = useAppSelector(getDefaultOffers);
@@ -46,7 +46,7 @@ const useHandleToBookmarksClick = ({id, onFailure}: useHandleToBookmarksClickPro
         postToFavorite();
       }
 
-      history.push(AppRoute.Root);
+      // history.push(AppRoute.Root);
     }
   };
 };

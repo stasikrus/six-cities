@@ -12,11 +12,12 @@ type OfferCardProps = {
 
 function OfferCard({card, isNearOffer}: OfferCardProps): JSX.Element {
 
-  const {id, href, previewImage, price, title, type, isPremium, isFavorite} = card;
+  const {id, href, previewImage, price, title, type, isPremium, isFavorite, rating} = card;
 
   const dispatch = useAppDispatch();
 
   const activeBookmarkClass = isFavorite ? 'place-card__bookmark-button--active' : '';
+  const percentage = (rating / 5) * 100;
 
   const handleMouseEnter = () => {
     dispatch(hoverOffer({id}));
@@ -62,7 +63,7 @@ function OfferCard({card, isNearOffer}: OfferCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{ width: `${percentage}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

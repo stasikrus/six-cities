@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { logout } from '../../store/api-actions';
 import { HeaderLink } from './header-link';
-// import { memo } from 'react';
 
 function HeaderNav(): JSX.Element {
 
@@ -56,5 +55,4 @@ function HeaderNav(): JSX.Element {
   );
 }
 
-// export default memo(HeaderNav);
 export default HeaderNav;

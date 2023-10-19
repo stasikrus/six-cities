@@ -36,6 +36,7 @@ const OfferPage = () => {
   const { title, isPremium, price, images, bedrooms, maxAdults, rating, description, goods, host, isFavorite } = offer!;
   const { avatarUrl, isPro, name } = host;
   const bookMarkActiveClass = isFavorite ? 'property__bookmark-button--active' : '';
+  const percentage = (rating / 5) * 100;
 
   return (
     <div className="page">
@@ -82,7 +83,7 @@ const OfferPage = () => {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
+                  <span style={{ width: `${percentage}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="property__rating-value rating__value">

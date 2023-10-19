@@ -24,6 +24,8 @@ export const getFilteredOffers = createSelector(
         return [...filteredOffers].sort((a, b) => a.price - b.price);
       case SortType.PRICE_TO_LOW:
         return [...filteredOffers].sort((a, b) => b.price - a.price);
+      case SortType.TOP_RATED:
+        return [...filteredOffers].sort((a, b) => b.rating - a.rating);
       default:
         return filteredOffers;
     }
